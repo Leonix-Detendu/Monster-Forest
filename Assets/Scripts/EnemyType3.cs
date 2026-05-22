@@ -1,13 +1,8 @@
 using UnityEngine;
 
-public class HPCapsule : Target
+public class EnemyType3 : Target
 {
-    private void Awake()
-    {
-        hitsRemaining = 1;
-        moveSpeed = 0;
-        timeToDespawn = 1;
-    }
+
     protected override void ProcessClick()
     {
         base.ProcessClick();
