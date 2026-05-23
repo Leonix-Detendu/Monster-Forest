@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections;
 
 public class Target : MonoBehaviour
 {
+    [HideInInspector] public bool hasSpawned = false;
     [SerializeField] protected int hitsRemaining;
     [SerializeField] protected float timeToDespawn;
     [SerializeField] protected float moveSpeed;
@@ -15,7 +17,16 @@ public class Target : MonoBehaviour
         direction = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
     }
 
-    protected virtual void FixedUpdate()
+    private void Update()
+    {
+        if (hasSpawned)
+        {
+            hasSpawned = false;
+            StartCoroutine(DespawnRoutine());
+        }
+    }
+
+    private void FixedUpdate()
     {
         Move();
     }
@@ -52,5 +63,11 @@ public class Target : MonoBehaviour
     private void Move()
     {
         rb.MovePosition(rb.position + direction * (moveSpeed * Time.fixedDeltaTime));
+    }
+
+    IEnumerator DespawnRoutine()
+    {
+        yield return new WaitForSeconds(timeToDespawn);
+        Destroy(gameObject);
     }
 }

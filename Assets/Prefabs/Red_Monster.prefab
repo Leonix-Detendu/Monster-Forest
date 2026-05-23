@@ -570,7 +570,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &7507191828876971721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,8 +583,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ed04e484270f34aaa74911c6e296cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyType1
+  hasSpawned: 0
   hitsRemaining: 1
-  timeToDespawn: 2
+  timeToDespawn: 1.5
   moveSpeed: 3
 --- !u!1 &6465157569655041461
 GameObject:
