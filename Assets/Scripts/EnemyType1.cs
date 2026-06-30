@@ -9,6 +9,7 @@ public class EnemyType1 : Target
         if (hitsRemaining <= 0)
         {
             GameManager.instance.score += 1;
+            GameManager.instance.ActualizeScore();
         }
     }
 }

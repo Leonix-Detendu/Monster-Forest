@@ -6,16 +6,25 @@ public class SpawnManager : MonoBehaviour
     [HideInInspector] public static SpawnManager instance;
 
     public GameObject[] Monsters;
-    // public Target[] TargetScripts;
 
     [SerializeField] private float limitLeft;
     [SerializeField] private float limitRight;
     [SerializeField] private float limitUp;
     [SerializeField] private float limitDown;
 
+    [HideInInspector] public float currentBonusSpeed;
+    [HideInInspector] public float currentDespawnReduction;
+
+    public int scoreInterval;
+    public float spawnDelayDecrease;
+    public float despawnDelayDecrease;
+    public float speedIncrease;
+
     private bool shouldSpawn = true;
-    [SerializeField] private float spawnDelayMin;
-    [SerializeField] private float spawnDelayMax;
+    public float spawnDelayMin;
+    public float spawnDelayMax;
+
+    public float minOfSpawnDelay;
 
 
     private void Awake()
@@ -29,19 +38,13 @@ public class SpawnManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        /* TargetScripts = new Target[Monsters.Length];
-        int i = 0;
-        
-        foreach ( GameObject monster in Monsters )
-        {
-            TargetScripts[i] = monster.GetComponent<Target>();
-            i++;
-        } */
+        currentBonusSpeed = 0f;
+        currentDespawnReduction = 0f;
     }
 
     private void Update()
     {
-        if (shouldSpawn) StartCoroutine(SpawnRoutine()); 
+        if (shouldSpawn && !GameManager.instance.gameOver) StartCoroutine(SpawnRoutine()); 
     }
 
     IEnumerator SpawnRoutine()
@@ -72,8 +75,35 @@ public class SpawnManager : MonoBehaviour
 
         GameObject newMonster = Instantiate(Monsters[indexOfMonster], spawnPos, Monsters[indexOfMonster].transform.rotation);
 
-        Target newMonsterTargetScript = newMonster.GetComponent<Target>();
-
-        newMonsterTargetScript.hasSpawned = true;
+        StartCoroutine(GrowthRoutine(newMonster));
     }
+
+    IEnumerator GrowthRoutine(GameObject monster)
+    {
+        if (monster == null) yield break;
+
+        Vector3 defaultScale = monster.transform.localScale;
+        Target monsterTargetScript = monster.GetComponent<Target>();
+
+        Debug.Log(monsterTargetScript.moveSpeed);
+
+        monster.transform.localScale = Vector3.one * 0.01f;
+
+        while (monster != null && monster.transform.localScale.sqrMagnitude < (monsterTargetScript.maxScaleFactor * defaultScale).sqrMagnitude)
+        {
+            monster.transform.localScale = monster.transform.localScale * monsterTargetScript.scaleFactor;
+            yield return new WaitForEndOfFrame();
+        }
+
+        while (monster != null && monster.transform.localScale.sqrMagnitude > defaultScale.sqrMagnitude)
+        {
+            monster.transform.localScale = monster.transform.localScale / monsterTargetScript.scaleFactor;
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (monster != null)
+        {
+            monster.transform.localScale = defaultScale;
+        }
+    } 
 }

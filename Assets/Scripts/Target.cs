@@ -4,25 +4,37 @@ using System.Collections;
 
 public class Target : MonoBehaviour
 {
-    [HideInInspector] public bool hasSpawned = false;
     [SerializeField] protected int hitsRemaining;
-    [SerializeField] protected float timeToDespawn;
-    [SerializeField] protected float moveSpeed;
+    public float timeToDespawn, moveSpeed, speedMax, timeToDespawnMin;
+    public float maxScaleFactor, scaleFactor;
     protected Vector2 direction;
     protected Rigidbody2D rb;
 
+    [HideInInspector] public bool wasClicked;
+
+    [SerializeField] protected AudioClip deathSound, hitSound, despawnSound, spawnSound;
+
+    protected bool isType3;
+
     protected virtual void Awake()
     {
+        isType3 = false;
         rb = GetComponent<Rigidbody2D>();
         direction = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-    }
+        GameManager.instance.audioSource.PlayOneShot(spawnSound);
+        StartCoroutine(DespawnRoutine());
 
-    private void Update()
-    {
-        if (hasSpawned)
+        moveSpeed += SpawnManager.instance.currentBonusSpeed;
+        if (moveSpeed > speedMax)
         {
-            hasSpawned = false;
-            StartCoroutine(DespawnRoutine());
+            moveSpeed = speedMax;
+        }
+
+        
+        timeToDespawn -= SpawnManager.instance.currentDespawnReduction;
+        if (timeToDespawn < timeToDespawnMin)
+        {
+            timeToDespawn = timeToDespawnMin;
         }
     }
 
@@ -32,8 +44,9 @@ public class Target : MonoBehaviour
     }
 
     private void OnMouseDown()
-    {
+    { 
         ProcessClick();
+        GameManager.instance.targetWasClicked = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -56,7 +69,12 @@ public class Target : MonoBehaviour
 
         if (hitsRemaining <= 0)
         {
+            GameManager.instance.audioSource.PlayOneShot(deathSound);
             Destroy(gameObject);
+        }
+        else
+        {
+            GameManager.instance.audioSource.PlayOneShot(hitSound);
         }
     }
 
@@ -68,6 +86,12 @@ public class Target : MonoBehaviour
     IEnumerator DespawnRoutine()
     {
         yield return new WaitForSeconds(timeToDespawn);
+        if (!GameManager.instance.gameOver && !isType3)
+        {
+            GameManager.instance.health--;
+            GameManager.instance.ActualizeHealth();
+        }
+        GameManager.instance.audioSource.PlayOneShot(despawnSound);
         Destroy(gameObject);
     }
 }
