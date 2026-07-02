@@ -596,6 +596,7 @@ MonoBehaviour:
   hitSound: {fileID: 8300000, guid: 23d4b8666d628614a934548d1ed94b93, type: 3}
   despawnSound: {fileID: 8300000, guid: 0e6e8d852448dc0458ced4037697d318, type: 3}
   spawnSound: {fileID: 8300000, guid: 2bc5fa78fba56504ca7cad271f368fe3, type: 3}
+  ExplosionEffect: {fileID: 180128, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
 --- !u!82 &-693666379363713663
 AudioSource:
   m_ObjectHideFlags: 0

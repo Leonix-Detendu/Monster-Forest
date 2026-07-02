@@ -3012,6 +3012,8 @@ MonoBehaviour:
   limitRight: 7.5
   limitUp: 2.3
   limitDown: -2.3
+  currentBonusSpeed: 0
+  currentDespawnReduction: 0
   scoreInterval: 5
   spawnDelayDecrease: 0.2
   despawnDelayDecrease: 0.1
@@ -4307,7 +4309,6 @@ Transform:
   - {fileID: 1926393646}
   - {fileID: 154641557}
   - {fileID: 66771046}
-  - {fileID: 1650792957}
   - {fileID: 469507164}
   - {fileID: 1591382966}
   - {fileID: 1776354279}
@@ -7801,7 +7802,7 @@ Transform:
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 738419199}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1650792958
 SpriteRenderer:
@@ -9759,3 +9760,4 @@ SceneRoots:
   - {fileID: 496191869}
   - {fileID: 738419199}
   - {fileID: 431966361}
+  - {fileID: 1650792957}

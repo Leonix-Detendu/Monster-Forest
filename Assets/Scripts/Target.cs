@@ -16,6 +16,8 @@ public class Target : MonoBehaviour
 
     protected bool isType3;
 
+    [SerializeField] private GameObject ExplosionEffect;
+
     protected virtual void Awake()
     {
         isType3 = false;
@@ -71,6 +73,12 @@ public class Target : MonoBehaviour
         {
             GameManager.instance.audioSource.PlayOneShot(deathSound);
             Destroy(gameObject);
+
+            if ( ExplosionEffect != null )
+            {
+                Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
+            }
+
         }
         else
         {
