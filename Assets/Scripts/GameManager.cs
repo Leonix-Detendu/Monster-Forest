@@ -69,7 +69,16 @@ public class GameManager : MonoBehaviour
 
         if (health <= 0 && !gameOver)
         {
+
             health = 0;
+
+            Target[] targetScripts;
+            targetScripts = Object.FindObjectsByType<Target>(FindObjectsSortMode.None);
+            foreach (Target script in targetScripts)
+            {
+                GameObject Monster = script.gameObject;
+                Destroy(Monster);
+            }
             gameOver = true;
             DisplayGameOver();
             if (score >= DataPersistence.instanceData.highestScore)
@@ -85,7 +94,6 @@ public class GameManager : MonoBehaviour
         if (score >= scoreToIncreaseDifficulty)
         {
             IncreaseDifficulty();
-            Debug.Log("negro");
         }
     }
 
@@ -122,7 +130,7 @@ public class GameManager : MonoBehaviour
             {
                 SpawnManager.instance.spawnDelayMin = SpawnManager.instance.minOfSpawnDelay;
             }
-            Debug.Log(SpawnManager.instance.spawnDelayMin);
+            
         }
 
         if (SpawnManager.instance.spawnDelayMax > SpawnManager.instance.spawnDelayMin)
@@ -133,7 +141,7 @@ public class GameManager : MonoBehaviour
             {
                 SpawnManager.instance.spawnDelayMax = SpawnManager.instance.spawnDelayMin;
             }
-            Debug.Log(SpawnManager.instance.spawnDelayMax);
+          
         }
     }
 

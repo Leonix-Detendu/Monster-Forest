@@ -84,9 +84,7 @@ public class SpawnManager : MonoBehaviour
 
         Vector3 defaultScale = monster.transform.localScale;
         Target monsterTargetScript = monster.GetComponent<Target>();
-
-        Debug.Log(monsterTargetScript.moveSpeed);
-
+  
         monster.transform.localScale = Vector3.one * 0.01f;
 
         while (monster != null && monster.transform.localScale.sqrMagnitude < (monsterTargetScript.maxScaleFactor * defaultScale).sqrMagnitude)
